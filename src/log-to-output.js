@@ -76,7 +76,7 @@ function logConsole(params) {
   }
 
   if (args) {
-    if (options.rawConsoleData && args[0] && args[0].value) {
+    if (options && options.rawConsoleData && args[0] && args[0].value) {
       logAdditional(args[0].value)
     }
     else {
@@ -86,9 +86,9 @@ function logConsole(params) {
   }
 }
 
-function install(on, filter, options = {}) {
+function install(on, filter, userOptions = {}) {
   eventFilter = filter
-  options = options
+  options = userOptions
   on('before:browser:launch', browserLaunchHandler)
 }
 
