@@ -2,6 +2,7 @@ const CDP = require('chrome-remote-interface')
 const chalk = require('chalk')
 
 let eventFilter
+let options
 
 const severityColors = {
   'verbose': (a) => a,
@@ -75,13 +76,19 @@ function logConsole(params) {
   }
 
   if (args) {
-    logAdditional(`Arguments:`)
-    logAdditional('  ' + JSON.stringify(args, null, 2).split('\n').join(`\n${prefixSpacer}  `).trimRight())
+    if (options.rawConsoleData && args[0] && args[0].value) {
+      logAdditional(args[0].value)
+    }
+    else {
+      logAdditional(`Arguments:`)
+      logAdditional('  ' + JSON.stringify(args, null, 2).split('\n').join(`\n${prefixSpacer}  `).trimRight())
+    }
   }
 }
 
-function install(on, filter) {
+function install(on, filter, options = {}) {
   eventFilter = filter
+  options = options
   on('before:browser:launch', browserLaunchHandler)
 }
 
